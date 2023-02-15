@@ -1,0 +1,19 @@
+version: "3"
+services:
+  jupyter:
+    image: ${JUPYTER_DOCKER_IMAGE}
+    container_name: togodx-jupyter
+    volumes:
+      - ./data:/home/${HOST_USER}/work/data:rw
+      - ./notebook:/home/${HOST_USER}/work/notebook:rw
+      - ${DOCKER_BIN_PATH}:/usr/bin/docker
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /tmp:/tmp
+    environment:
+      - NB_UID=${HOST_UID}
+      - NB_GID=${HOST_GID}
+    ports:
+      - 8888:8888
+    restart: always
+    working_dir: /home/${HOST_USER}/work
+    command: start.sh jupyter notebook --NotebookApp.token=''
